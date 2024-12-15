@@ -71,12 +71,14 @@ const Tasks = () => {
     try {
       if (selectedTodo) {
         // Update status
+        setIsModalVisible(false);
         setLoading(true);
         await updateTodo(selectedTodo._id, todo);
         setLoading(false);
         toast.success("Todo updated successfully! 🛠️");
       } else {
         // Create new todo
+        setIsModalVisible(false);
         setLoading(true);
         await createTodo(todo);
         setLoading(false);
