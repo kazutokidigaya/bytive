@@ -10,10 +10,10 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-
+connectDb();
 app.use(
   cors({
-    origin: `${process.env.FRONTEND_URL}`,
+    origin: `https://todo-bytive.netlify.app/`,
     credentials: true, // Enable cookies
   })
 );
