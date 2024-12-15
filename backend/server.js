@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true, // Enable cookies
   })
 );
@@ -23,7 +23,31 @@ app.use(cookieParser());
 app.use("/api/auth", userRoutes);
 app.use("/api/tasks", taskRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Sever is running on PORT: http://localhost:${PORT} `);
-  connectDb();
+app.use((req, res, next) => {
+  if (
+    process.env.NODE_ENV === "production" &&
+    req.headers["x-forwarded-proto"] !== "https"
+  ) {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+  next();
 });
+
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Backend is up and running!" });
+});
+
+// Start the server
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 5000;
+  const HOST = "0.0.0.0"; // Bind to all interfaces for Render
+  const server = app.listen(PORT, HOST, () =>
+    console.log(`Server is running on port ${PORT}`)
+  );
+
+  // Set custom timeouts to avoid Render connection resets
+  server.keepAliveTimeout = 120000; // 2 minutes
+  server.headersTimeout = 120000; // 2 minutes
+}
+
+export { app };
