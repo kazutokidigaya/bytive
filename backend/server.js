@@ -14,6 +14,7 @@ connectDb();
 app.use(
   cors({
     origin: `https://todo-bytive.netlify.app/`,
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true, // Enable cookies
   })
 );
