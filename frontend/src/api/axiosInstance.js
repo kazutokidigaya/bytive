@@ -14,7 +14,7 @@ export const clearAccessToken = () => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://bytive-qkew.onrender.com/api",
   withCredentials: true,
 });
 
